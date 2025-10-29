@@ -1,0 +1,42 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Movie {
+  id           String   @id @default(cuid()) @db.VarChar(191)
+  userId       String   @db.VarChar(191)
+  title        String   @db.VarChar(191)
+  director     String   @db.VarChar(191)
+  budget       Decimal? @db.Decimal(12, 2)
+  location     String   @db.VarChar(191)
+  duration     Int
+  releaseYear  Int?
+  releaseDate  DateTime?
+  description  String?  @db.Text
+  posterUrl    String?  @db.VarChar(512)
+  omdbId       String?  @unique @db.VarChar(191)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([userId, createdAt])
+}
+
+model UserPreference {
+  id          String   @id @default(cuid()) @db.VarChar(191)
+  userId      String   @unique @db.VarChar(191)
+  theme       String   @default("light") @db.VarChar(64)
+  accentColor String?  @db.VarChar(32)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
