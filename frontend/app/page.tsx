@@ -1,3 +1,4 @@
+import { LandingNavigation } from "@/components/landing/navigation";
 import { AnimatedHero } from "@/components/landing/animated-hero";
 import { MovieShowcase } from "@/components/landing/movie-showcase";
 import { FeatureCards } from "@/components/landing/feature-cards";
@@ -9,24 +10,16 @@ import { ScrollProgress } from "@/components/landing/scroll-progress";
 export default function Home() {
   return (
     <div className="relative isolate overflow-hidden">
-      {/* Scroll progress indicator */}
+      <LandingNavigation />
       <ScrollProgress />
-      
-      {/* Floating background elements */}
       <FloatingElements />
-      
-      {/* Main content sections with smooth scroll */}
       <div className="relative">
         <AnimatedHero />
         <MovieShowcase />
         <FeatureCards />
-        
-        {/* Search section with spacing */}
-        <section className="container py-24">
+        <section id="search" className="container py-24">
           <LandingSearch />
         </section>
-        
-        {/* Footer */}
         <CinematicFooter />
       </div>
     </div>

@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Geist, Geist_Mono } from "next/font/google";
-import { SiteHeader } from "@/components/site-header";
 import { ReactQueryProvider } from "@/components/providers/react-query-provider";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { PreferencesSync } from "@/components/providers/preferences-sync";
@@ -35,10 +34,7 @@ export default function RootLayout({
           <ThemeProvider>
             <ReactQueryProvider>
               <PreferencesSync />
-              <div className="flex min-h-screen flex-col">
-                <SiteHeader />
-                <main className="flex-1">{children}</main>
-              </div>
+              <main className="min-h-screen">{children}</main>
               <AppToaster />
             </ReactQueryProvider>
           </ThemeProvider>

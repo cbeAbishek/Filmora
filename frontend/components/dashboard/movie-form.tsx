@@ -1,14 +1,17 @@
 "use client";
 
+import { ChangeEvent, useEffect, useState } from "react";
 import { useForm, Resolver } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useAuth } from "@clerk/nextjs";
 import { z } from "zod";
 import { movieSchema } from "@/lib/validation";
-import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { buildUrl, handleResponse } from "@/lib/api-client";
+import { getEnv } from "@/lib/env";
 
 const formSchema = movieSchema.extend({
   duration: z.number().int("Duration must be an integer").positive("Duration must be greater than zero"),
@@ -26,6 +29,19 @@ interface MovieFormProps {
 
 const fieldClass = "space-y-2";
 
+interface ImagekitAuthResponse {
+  token: string;
+  expire: number;
+  signature: string;
+}
+
+interface ImagekitUploadResponse {
+  url?: string;
+  thumbnailUrl?: string;
+  fileId: string;
+  message?: string;
+}
+
 function normalizeReleaseDate(value?: string | null) {
   if (!value) return null;
   const trimmed = value.trim();
@@ -42,6 +58,16 @@ function normalizeReleaseDate(value?: string | null) {
 }
 
 export function MovieForm({ onSubmit, defaultValues, loading, submitLabel = "Save movie" }: MovieFormProps) {
+  const { getToken } = useAuth();
+  const {
+    NEXT_PUBLIC_CLERK_JWT_TEMPLATE,
+    NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY,
+    NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT,
+  } = getEnv();
+  const [isPosterUploading, setIsPosterUploading] = useState(false);
+  const [posterUploadError, setPosterUploadError] = useState<string | null>(null);
+  const posterPlaceholder = `${NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT}/poster.jpg`;
+
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema) as unknown as Resolver<FormValues>,
     defaultValues: {
@@ -57,6 +83,10 @@ export function MovieForm({ onSubmit, defaultValues, loading, submitLabel = "Sav
       omdbId: null,
       ...defaultValues,
     },
+  });
+
+  const posterUrlField = form.register("posterUrl", {
+    onChange: () => setPosterUploadError(null),
   });
 
   useEffect(() => {
@@ -98,6 +128,91 @@ export function MovieForm({ onSubmit, defaultValues, loading, submitLabel = "Sav
 
     await onSubmit(payload);
   });
+
+  const getAuthToken = async () => {
+    try {
+      return NEXT_PUBLIC_CLERK_JWT_TEMPLATE
+        ? await getToken({ template: NEXT_PUBLIC_CLERK_JWT_TEMPLATE })
+        : await getToken();
+    } catch {
+      return null;
+    }
+  };
+
+  const fetchImagekitAuth = async (): Promise<ImagekitAuthResponse> => {
+    const token = await getAuthToken();
+    if (!token) {
+      throw new Error("Sign in to upload posters");
+    }
+
+    const response = await fetch(buildUrl("/imagekit/auth"), {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      credentials: "include",
+    });
+
+    return handleResponse<ImagekitAuthResponse>(response);
+  };
+
+  const uploadPoster = async (file: File) => {
+    setPosterUploadError(null);
+    setIsPosterUploading(true);
+
+    try {
+      const auth = await fetchImagekitAuth();
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("fileName", file.name);
+      formData.append("token", auth.token);
+      formData.append("expire", String(auth.expire));
+      formData.append("signature", auth.signature);
+      formData.append("publicKey", NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY);
+
+      const uploadResponse = await fetch("https://upload.imagekit.io/api/v1/files/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      const payload = (await uploadResponse.json().catch(() => null)) as ImagekitUploadResponse | null;
+
+      if (!uploadResponse.ok) {
+        const message = payload?.message ?? "Failed to upload poster";
+        throw new Error(message);
+      }
+
+      if (!payload?.url) {
+        throw new Error("ImageKit response did not include a file URL");
+      }
+
+      form.setValue("posterUrl", payload.url, { shouldValidate: true, shouldDirty: true });
+      void form.trigger("posterUrl");
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Could not upload poster";
+      setPosterUploadError(message);
+    } finally {
+      setIsPosterUploading(false);
+    }
+  };
+
+  const handlePosterFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    event.target.value = "";
+
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      setPosterUploadError("Poster must be an image file");
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      setPosterUploadError("Poster must be smaller than 5MB");
+      return;
+    }
+
+    await uploadPoster(file);
+  };
 
   return (
     <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-6">
@@ -179,8 +294,11 @@ export function MovieForm({ onSubmit, defaultValues, loading, submitLabel = "Sav
           )}
         </div>
         <div className={fieldClass}>
-          <Label htmlFor="posterUrl">Poster URL</Label>
-          <Input id="posterUrl" placeholder="https://" {...form.register("posterUrl")} />
+          <Label htmlFor="posterUrl">Poster</Label>
+          <Input id="posterUrl" placeholder={posterPlaceholder} {...posterUrlField} />
+          <Input id="posterFile" type="file" accept="image/*" onChange={handlePosterFileChange} disabled={isPosterUploading} />
+          {isPosterUploading ? <p className="text-sm text-muted-foreground">Uploading poster…</p> : null}
+          {posterUploadError ? <p className="text-sm text-destructive">{posterUploadError}</p> : null}
           {form.formState.errors.posterUrl && (
             <p className="text-sm text-destructive">{form.formState.errors.posterUrl.message}</p>
           )}
