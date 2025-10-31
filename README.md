@@ -17,7 +17,7 @@
 ## � Screenshot
 
 <div align="center">
-  <img src="preview.png" alt="Filmora Screenshot" width="800"/>
+  <img src="perview.png" alt="Filmora Screenshot" width="800"/>
 </div>
 
 ---
