@@ -24,7 +24,8 @@
     "imagekit": "^6.0.0",
     "morgan": "^1.10.1",
     "prisma": "^6.18.0",
-    "zod": "^4.1.12"
+    "zod": "^4.1.12",
+    "@types/node": "^24.9.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.38.0",
@@ -34,7 +35,6 @@
     "@types/express": "^5.0.5",
     "@types/helmet": "^0.0.48",
     "@types/morgan": "^1.9.10",
-    "@types/node": "^24.9.2",
     "@typescript-eslint/eslint-plugin": "^8.46.2",
     "@typescript-eslint/parser": "^8.46.2",
     "eslint": "^9.38.0",
