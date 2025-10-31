@@ -1,11 +1,12 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { Plus, MoreHorizontal, Pencil, Trash2, Loader2, Search as SearchIcon, Film, LayoutGrid, List } from "lucide-react";
 import { toast } from "sonner";
 import { useInfiniteMovies } from "@/hooks/use-infinite-movies";
 import { useMovieMutations } from "@/hooks/use-movie-mutations";
 import { useDebounce } from "@/hooks/use-debounce";
+import { usePreferences } from "@/hooks/use-preferences";
 import type { Movie } from "@/lib/types";
 import { MovieForm, type MovieFormSchema } from "@/components/dashboard/movie-form";
 import { Badge } from "@/components/ui/badge";
@@ -54,6 +55,9 @@ export function DashboardView() {
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [editingMovie, setEditingMovie] = useState<Movie | null>(null);
   const [viewMode, setViewMode] = useState<"card" | "list">("card");
+  const [buttonStyle, setButtonStyle] = useState<React.CSSProperties>({});
+
+  const { query: preferencesQuery } = usePreferences();
 
   const debouncedSearch = useDebounce(search, 400);
 
@@ -61,6 +65,18 @@ export function DashboardView() {
   const { createMutation, updateMutation, deleteMutation } = useMovieMutations();
 
   const movies = useMemo(() => movieQuery.data?.pages.flatMap((page) => page.data) ?? [], [movieQuery.data]);
+
+  // Apply user's selected accent color to button
+  useEffect(() => {
+    if (preferencesQuery.data?.accentColor) {
+      const accentColor = preferencesQuery.data.accentColor;
+      setButtonStyle({
+        backgroundColor: accentColor,
+        borderColor: accentColor,
+        boxShadow: `0 0 20px ${accentColor}40, 0 0 40px ${accentColor}20`,
+      });
+    }
+  }, [preferencesQuery.data]);
 
   const handleCreate = async (values: MovieFormSchema) => {
     try {
@@ -118,23 +134,30 @@ export function DashboardView() {
           </div>
           <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
             <DialogTrigger asChild>
-              <Button className="gap-2 w-full sm:w-auto shadow-lg hover:shadow-2xl transition-all duration-300 bg-primary hover:bg-primary/90 text-primary-foreground group relative overflow-hidden ring-2 ring-primary/50 hover:ring-primary hover:scale-105">
+              <Button 
+                style={buttonStyle}
+                className="gap-2 w-full sm:w-auto shadow-2xl hover:shadow-[0_0_30px_currentColor] transition-all duration-300 text-white hover:brightness-110 group relative overflow-hidden ring-4 ring-current ring-opacity-30 hover:ring-opacity-60 hover:scale-110 animate-pulse hover:animate-none"
+              >
                 {/* Animated shine effect */}
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
                 
-                {/* Pulse animation background */}
-                <div className="absolute inset-0 bg-primary/20 animate-pulse" />
+                {/* Sparkle effect */}
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <div className="absolute top-1 left-1 h-2 w-2 bg-white rounded-full animate-ping" />
+                  <div className="absolute bottom-1 right-1 h-2 w-2 bg-white rounded-full animate-ping delay-75" />
+                </div>
                 
                 {/* Icon with rotation */}
-                <Plus className="h-5 w-5 relative z-10 transition-transform group-hover:rotate-180 duration-500" />
+                <Plus className="h-5 w-5 relative z-10 transition-transform group-hover:rotate-180 duration-500 drop-shadow-lg" />
                 
-                {/* Text with glow effect */}
-                <span className="relative z-10 font-semibold text-base group-hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]">
+                {/* Text with enhanced visibility */}
+                <span className="relative z-10 font-bold text-base tracking-wide drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)] group-hover:drop-shadow-[0_0_12px_rgba(255,255,255,0.9)]">
                   New Movie
                 </span>
                 
-                {/* Gradient border glow */}
-                <div className="absolute inset-0 rounded-md bg-gradient-to-r from-primary via-primary/50 to-primary opacity-0 group-hover:opacity-100 blur-sm transition-opacity duration-300 -z-10" />
+                {/* Glow border effect */}
+                <div className="absolute -inset-1 rounded-lg opacity-0 group-hover:opacity-100 blur-md transition-opacity duration-300 -z-10" 
+                     style={{ backgroundColor: buttonStyle.backgroundColor }} />
               </Button>
             </DialogTrigger>
             <DialogContent className="max-w-[95vw] sm:max-w-md md:max-w-lg">
