@@ -160,16 +160,16 @@ export function AdvancedThemeToggle({ variant = "full", align = "end" }: Advance
             <span className="sr-only">Toggle theme</span>
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align={align}>
-          <DropdownMenuItem onClick={() => handleThemeChange("light")}>
+        <DropdownMenuContent align={align} className="bg-background/95 backdrop-blur-xl border-2 shadow-xl">
+          <DropdownMenuItem onClick={() => handleThemeChange("light")} className="cursor-pointer">
             <Sun className="mr-2 h-4 w-4" />
             Light
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => handleThemeChange("dark")}>
+          <DropdownMenuItem onClick={() => handleThemeChange("dark")} className="cursor-pointer">
             <Moon className="mr-2 h-4 w-4" />
             Dark
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => handleThemeChange("system")}>
+          <DropdownMenuItem onClick={() => handleThemeChange("system")} className="cursor-pointer">
             <Monitor className="mr-2 h-4 w-4" />
             System
           </DropdownMenuItem>
@@ -192,19 +192,19 @@ export function AdvancedThemeToggle({ variant = "full", align = "end" }: Advance
           <span className="sr-only">Toggle theme</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align={align} className="w-56">
+      <DropdownMenuContent align={align} className="w-56 bg-background/95 backdrop-blur-xl border-2 shadow-xl">
         <DropdownMenuLabel>Theme Mode</DropdownMenuLabel>
-        <DropdownMenuItem onClick={() => handleThemeChange("light")}>
+        <DropdownMenuItem onClick={() => handleThemeChange("light")} className="cursor-pointer">
           <Sun className="mr-2 h-4 w-4" />
           Light
           {theme === "light" && <Check className="ml-auto h-4 w-4" />}
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => handleThemeChange("dark")}>
+        <DropdownMenuItem onClick={() => handleThemeChange("dark")} className="cursor-pointer">
           <Moon className="mr-2 h-4 w-4" />
           Dark
           {theme === "dark" && <Check className="ml-auto h-4 w-4" />}
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => handleThemeChange("system")}>
+        <DropdownMenuItem onClick={() => handleThemeChange("system")} className="cursor-pointer">
           <Monitor className="mr-2 h-4 w-4" />
           System
           {theme === "system" && <Check className="ml-auto h-4 w-4" />}
@@ -216,14 +216,14 @@ export function AdvancedThemeToggle({ variant = "full", align = "end" }: Advance
           <Palette className="h-4 w-4" />
           Accent Color
         </DropdownMenuLabel>
-        <div className="grid grid-cols-4 gap-2 p-2">
+        <div className="grid grid-cols-4 gap-2 p-2 bg-muted/30 rounded-md">
           {ACCENT_COLORS.map((color) => (
             <button
               key={color.value}
               onClick={() => handleAccentChange(color.value)}
               className={cn(
-                "group relative h-8 w-8 rounded-md transition-all hover:scale-110 active:scale-95",
-                currentAccent === color.value && "ring-2 ring-offset-2 ring-offset-background ring-primary"
+                "group relative h-8 w-8 rounded-md transition-all hover:scale-110 active:scale-95 shadow-md",
+                currentAccent === color.value && "ring-2 ring-offset-2 ring-offset-background ring-primary scale-110"
               )}
               style={{ backgroundColor: color.value }}
               title={color.name}

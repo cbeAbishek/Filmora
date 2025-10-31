@@ -136,28 +136,18 @@ export function DashboardView() {
             <DialogTrigger asChild>
               <Button 
                 style={buttonStyle}
-                className="gap-2 w-full sm:w-auto shadow-2xl hover:shadow-[0_0_30px_currentColor] transition-all duration-300 text-white hover:brightness-110 group relative overflow-hidden ring-4 ring-current ring-opacity-30 hover:ring-opacity-60 hover:scale-110 animate-pulse hover:animate-none"
+                className="gap-2 w-full sm:w-auto shadow-lg hover:shadow-xl transition-all duration-300 text-white hover:brightness-110 group relative overflow-hidden hover:scale-105"
               >
                 {/* Animated shine effect */}
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
-                
-                {/* Sparkle effect */}
-                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <div className="absolute top-1 left-1 h-2 w-2 bg-white rounded-full animate-ping" />
-                  <div className="absolute bottom-1 right-1 h-2 w-2 bg-white rounded-full animate-ping delay-75" />
-                </div>
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000" />
                 
                 {/* Icon with rotation */}
-                <Plus className="h-5 w-5 relative z-10 transition-transform group-hover:rotate-180 duration-500 drop-shadow-lg" />
+                <Plus className="h-5 w-5 relative z-10 transition-transform group-hover:rotate-90 duration-300" />
                 
-                {/* Text with enhanced visibility */}
-                <span className="relative z-10 font-bold text-base tracking-wide drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)] group-hover:drop-shadow-[0_0_12px_rgba(255,255,255,0.9)]">
+                {/* Text */}
+                <span className="relative z-10 font-semibold text-base">
                   New Movie
                 </span>
-                
-                {/* Glow border effect */}
-                <div className="absolute -inset-1 rounded-lg opacity-0 group-hover:opacity-100 blur-md transition-opacity duration-300 -z-10" 
-                     style={{ backgroundColor: buttonStyle.backgroundColor }} />
               </Button>
             </DialogTrigger>
             <DialogContent className="max-w-[95vw] sm:max-w-md md:max-w-lg">
@@ -253,10 +243,10 @@ export function DashboardView() {
                   <SelectTrigger id="sort" className="h-11 sm:h-12 text-sm border-2 border-primary/20 focus:border-primary/50 bg-background/50 backdrop-blur-sm rounded-lg hover:bg-primary/5 transition-all">
                     <SelectValue placeholder="Sort" />
                   </SelectTrigger>
-                  <SelectContent className="rounded-lg border-2 border-primary/20">
-                    <SelectItem value="createdAt" className="rounded-md">Recently added</SelectItem>
-                    <SelectItem value="title" className="rounded-md">Title</SelectItem>
-                    <SelectItem value="releaseYear" className="rounded-md">Release year</SelectItem>
+                  <SelectContent className="rounded-lg border-2 border-primary/20 bg-background/95 backdrop-blur-xl shadow-xl">
+                    <SelectItem value="createdAt" className="rounded-md cursor-pointer">Recently added</SelectItem>
+                    <SelectItem value="title" className="rounded-md cursor-pointer">Title</SelectItem>
+                    <SelectItem value="releaseYear" className="rounded-md cursor-pointer">Release year</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -269,9 +259,9 @@ export function DashboardView() {
                   <SelectTrigger id="order" className="h-11 sm:h-12 text-sm border-2 border-primary/20 focus:border-primary/50 bg-background/50 backdrop-blur-sm rounded-lg hover:bg-primary/5 transition-all">
                     <SelectValue placeholder="Order" />
                   </SelectTrigger>
-                  <SelectContent className="rounded-lg border-2 border-primary/20">
-                    <SelectItem value="desc" className="rounded-md">Descending</SelectItem>
-                    <SelectItem value="asc" className="rounded-md">Ascending</SelectItem>
+                  <SelectContent className="rounded-lg border-2 border-primary/20 bg-background/95 backdrop-blur-xl shadow-xl">
+                    <SelectItem value="desc" className="rounded-md cursor-pointer">Descending</SelectItem>
+                    <SelectItem value="asc" className="rounded-md cursor-pointer">Ascending</SelectItem>
                   </SelectContent>
                 </Select>
               </div>

@@ -136,9 +136,9 @@ export function PreferencesView() {
                   <SelectTrigger id="theme" className="w-full hidden sm:flex sm:w-72">
                     <SelectValue placeholder="Select a theme" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="bg-background/95 backdrop-blur-xl border-2 shadow-xl">
                     {themeOptions.map((option) => (
-                      <SelectItem key={option.value} value={option.value}>
+                      <SelectItem key={option.value} value={option.value} className="cursor-pointer">
                         <div className="flex flex-col">
                           <span className="font-medium">{option.label}</span>
                           <span className="text-xs text-muted-foreground">{option.description}</span>

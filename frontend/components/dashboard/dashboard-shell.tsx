@@ -30,9 +30,7 @@ export function DashboardShell({ children }: DashboardShellProps) {
           className="flex items-center gap-2 text-base sm:text-lg font-semibold tracking-tight transition-opacity hover:opacity-80"
           onClick={() => setIsMobileOpen(false)}
         >
-          <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-primary/20 to-primary/10 text-primary ring-1 ring-primary/20">
-            F
-          </span>
+          <img src="/logo.svg" alt="Filmora logo" className="inline-flex h-12 w-12  object-contain" />
           <span className="bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text">Filmora</span>
         </Link>
         <nav className="space-y-1">
@@ -110,12 +108,14 @@ export function DashboardShell({ children }: DashboardShellProps) {
                 <Menu className="h-5 w-5 transition-transform duration-200" />
               )}
             </Button>
-            <Link href="/" className="flex items-center gap-2 text-sm font-semibold sm:text-base">
-              <span className="inline-flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-primary/20 to-primary/10 text-primary ring-1 ring-primary/20 sm:h-8 sm:w-8">
-                F
-              </span>
-              <span className="hidden xs:inline">Filmora</span>
-            </Link>
+             <Link 
+          href="/" 
+          className="flex items-center gap-2 text-base sm:text-lg font-semibold tracking-tight transition-opacity hover:opacity-80"
+          onClick={() => setIsMobileOpen(false)}
+        >
+          <img src="/logo.svg" alt="Filmora logo" className="inline-flex h-12 w-12  object-contain" />
+          <span className="bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text">Filmora</span>
+        </Link>
           </div>
 
           {/* Desktop: Page Title */}

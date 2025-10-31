@@ -5,9 +5,7 @@ import { Film, Github, Twitter, Mail, Heart, ArrowRight } from "lucide-react";
 import Link from "next/link";
 
 const socialLinks = [
-  { icon: Github, href: "#", label: "GitHub" },
-  { icon: Twitter, href: "#", label: "Twitter" },
-  { icon: Mail, href: "mailto:hello@filmora.com", label: "Email" },
+  { icon: Github, href: "https://github.com/cbeAbishek/Filmora", label: "GitHub" },
 ];
 
 const footerLinks = [
@@ -73,18 +71,18 @@ export function CinematicFooter() {
           >
             {/* Logo */}
             <Link href="/" className="inline-flex items-center gap-3 group">
-              <motion.div
+                <motion.div
                 whileHover={{ rotate: 360 }}
-                transition={{ duration: 0.6, type: "spring" }}
-                className="flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-primary via-primary to-accent shadow-lg shadow-primary/25 ring-1 ring-primary/20 p-2"
-              >
+                transition={{ duration: 5.6, type: "spring" }}
+                className="flex h-11 w-11 sm:h-20 sm:w-20 items-center justify-center to-accent shadow-lg shadow-primary/25 p-2"
+                >
                 <img
                   src="/logo.png"
                   alt="Filmora logo"
-                  className="h-15 w-15 sm:h-20 sm:w-20 object-contain"
+                  className="h-25 w-25 sm:h-20 sm:w-20 object-contain"
                 />
-              </motion.div>
-              <span className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
+                </motion.div>
+              <span className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-primary">
                 Filmora
               </span>
             </Link>
@@ -159,17 +157,28 @@ export function CinematicFooter() {
           {/* Mobile: Stack vertically, Desktop: Flex row */}
           <div className="flex flex-col-reverse gap-4 sm:flex-row sm:items-center sm:justify-between">
             {/* Copyright */}
-            <p className="text-xs sm:text-sm text-muted-foreground text-center sm:text-left flex items-center justify-center sm:justify-start gap-2 flex-wrap">
-              <span>© 2025 Filmora. Made with</span>
-              <motion.span
-                animate={{ scale: [1, 1.2, 1] }}
-                transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-                className="inline-block"
-              >
-                <Heart className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-red-500 fill-current" />
-              </motion.span>
-              <span>for movie lovers</span>
-            </p>
+            <div className="flex flex-col gap-2 items-center sm:items-start">
+              <p className="text-xs sm:text-sm text-muted-foreground text-center sm:text-left flex items-center justify-center sm:justify-start gap-2 flex-wrap">
+                <span>© 2025 Filmora. Made with</span>
+                <motion.span
+                  animate={{ scale: [1, 1.2, 1] }}
+                  transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                  className="inline-block"
+                >
+                  <Heart className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-red-500 fill-current" />
+                </motion.span>
+                <span>for movie lovers</span>
+              </p>
+              <p className="text-xs text-muted-foreground/80 text-center sm:text-left">
+                Developed by{" "}
+                <a 
+                  href="https://abi-portfoilio.vercel.app/" 
+                  className="font-medium text-primary hover:text-primary/80 hover:underline underline-offset-2 transition-colors"
+                >
+                  Abishek
+                </a>
+              </p>
+            </div>
 
             {/* Legal links */}
             <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-xs sm:text-sm text-muted-foreground">
