@@ -14,7 +14,15 @@
 
 ---
 
-## 📋 Table of Contents
+## � Screenshot
+
+<div align="center">
+  <img src="preview.png" alt="Filmora Screenshot" width="800"/>
+</div>
+
+---
+
+## �📋 Table of Contents
 
 - [✨ Features](#-features)
 - [🛠️ Tech Stack](#️-tech-stack)
@@ -64,7 +72,7 @@
       <br>shadcn/ui
     </td>
     <td align="center" width="96">
-      <img src="https://cdn.worldvectorlogo.com/logos/clerk.svg" width="48" height="48" alt="Clerk" />
+      <img src="https://avatars.githubusercontent.com/u/97491483?s=200&v=4" width="48" height="48" alt="Clerk" />
       <br>Clerk
     </td>
     <td align="center" width="96">
@@ -87,7 +95,7 @@
       <br>Express
     </td>
     <td align="center" width="96">
-      <img src="https://www.vectorlogo.zone/logos/prismaio/prismaio-icon.svg" width="48" height="48" alt="Prisma" />
+      <img src="https://avatars.githubusercontent.com/u/17219288?s=200&v=4" width="48" height="48" alt="Prisma" />
       <br>Prisma
     </td>
     <td align="center" width="96">
@@ -95,7 +103,7 @@
       <br>Neon DB
     </td>
     <td align="center" width="96">
-      <img src="https://seeklogo.com/images/Z/zod-logo-B57E684330-seeklogo.com.png" width="48" height="48" alt="Zod" />
+      <img src="https://raw.githubusercontent.com/colinhacks/zod/master/logo.svg" width="48" height="48" alt="Zod" />
       <br>Zod
     </td>
   </tr>
@@ -110,7 +118,7 @@
       <br>Vercel
     </td>
     <td align="center" width="96">
-      <img src="https://render.com/favicon.ico" width="48" height="48" alt="Render" />
+      <img src="https://avatars.githubusercontent.com/u/5542226?s=200&v=4" width="48" height="48" alt="Render" />
       <br>Render.io
     </td>
     <td align="center" width="96">
