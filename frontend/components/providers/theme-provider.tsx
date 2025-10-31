@@ -6,10 +6,10 @@ import * as React from "react";
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   return (
     <NextThemesProvider
-      attribute="data-theme"
+      attribute="class"
       defaultTheme="system"
       enableSystem
-      themes={["light", "dark", "sunset", "lagoon"]}
+      disableTransitionOnChange
     >
       {children}
     </NextThemesProvider>

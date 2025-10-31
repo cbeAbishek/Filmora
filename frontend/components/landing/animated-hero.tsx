@@ -6,7 +6,7 @@ import { ArrowRight, Sparkles, Wand2, Film } from "lucide-react";
 import { SignedIn, SignedOut, SignInButton } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 
 const featureBadges = [
   { label: "Infinite Library", icon: Sparkles },
@@ -21,12 +21,12 @@ const posterRows = [
     offset: "8%",
     speed: 55,
     posters: [
-      "https://images.unsplash.com/photo-1497032628192-86f99bcd76bc?w=520&h=320&fit=crop",
-      "https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?w=520&h=320&fit=crop",
-      "https://images.unsplash.com/photo-1524985069026-dd778a71c7b4?w=520&h=320&fit=crop",
-      "https://images.unsplash.com/photo-1535223289827-42f1e9919769?w=520&h=320&fit=crop",
-      "https://images.unsplash.com/photo-1521986329282-0436c1f1bab5?w=520&h=320&fit=crop",
-      "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=520&h=320&fit=crop",
+      "./th_1.jpeg",
+      "./th_2.jpeg",
+      "./th_3.jpeg",
+      "./th_4.jpeg",
+      "./th_5.jpeg",
+      "./th_6.jpeg",
     ],
   },
   {
@@ -35,13 +35,13 @@ const posterRows = [
     offset: "36%",
     speed: 60,
     posters: [
-      "https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=520&h=320&fit=crop",
-      "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=520&h=320&fit=crop",
-      "https://images.unsplash.com/photo-1629541130237-e9324f9564c7?w=520&h=320&fit=crop",
-      "https://images.unsplash.com/photo-1497032628192-86f99bcd76bc?w=520&h=320&fit=crop",
-      "https://images.unsplash.com/photo-1525186402429-b4ff38bedbec?w=520&h=320&fit=crop",
-      "https://images.unsplash.com/photo-1524985069026-dd778a71c7b4?w=520&h=320&fit=crop",
-    ],
+      "./th_1.jpeg",
+      "./th_2.jpeg",
+      "./th_3.jpeg",
+      "./th_4.jpeg",
+      "./th_5.jpeg",
+      "./th_6.jpeg"
+    ]
   },
   {
     id: "poster-row-3",
@@ -49,12 +49,12 @@ const posterRows = [
     offset: "64%",
     speed: 50,
     posters: [
-      "https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?w=520&h=320&fit=crop",
-      "https://images.unsplash.com/photo-1517747614396-d21a78b846db?w=520&h=320&fit=crop",
-      "https://images.unsplash.com/photo-1524985069026-dd778a71c7b4?w=520&h=320&fit=crop",
-      "https://images.unsplash.com/photo-1456926631375-92c8ce872def?w=520&h=320&fit=crop",
-      "https://images.unsplash.com/photo-1521986329282-0436c1f1bab5?w=520&h=320&fit=crop",
-      "https://images.unsplash.com/photo-1626943304965-06b5be708529?w=520&h=320&fit=crop",
+      "./th_7.jpeg",
+      "./th_8.jpeg",
+      "./th_9.jpeg",
+      "./th_10.jpeg",
+      "./th_11.jpeg",
+      "./th_12.jpeg",
     ],
   },
 ];
@@ -96,6 +96,81 @@ function HeroPosterRow({
   );
 }
 
+function AnimatedTitle({ text }: { text: string }) {
+  const words = text.split(" ");
+  
+  const container = {
+    hidden: { opacity: 0 },
+    visible: (i = 1) => ({
+      opacity: 1,
+      transition: { staggerChildren: 0.08, delayChildren: 0.4 },
+    }),
+  };
+
+  const child = {
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: "spring" as const,
+        damping: 12,
+        stiffness: 100,
+      },
+    },
+    hidden: {
+      opacity: 0,
+      y: 20,
+    },
+  };
+
+  return (
+    <motion.h1
+      variants={container}
+      initial="hidden"
+      animate="visible"
+      className="text-5xl font-bold leading-tight tracking-tight text-white drop-shadow-2xl sm:text-6xl lg:text-7xl [text-shadow:_0_4px_20px_rgba(0,0,0,0.8)]"
+    >
+      {words.map((word, index) => (
+        <motion.span
+          variants={child}
+          key={index}
+          className="inline-block mr-[0.25em]"
+        >
+          {word}
+        </motion.span>
+      ))}
+    </motion.h1>
+  );
+}
+
+function AnimatedLabel({ text }: { text: string }) {
+  return (
+    <motion.span
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ 
+        opacity: 1, 
+        y: 0,
+      }}
+      transition={{ duration: 0.6, delay: 0.35 }}
+      className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/20 px-6 py-2 text-sm font-medium uppercase tracking-[0.4em] text-white backdrop-blur-xl drop-shadow-lg"
+    >
+      <motion.span
+        animate={{
+          scale: [1, 1.2, 1],
+          opacity: [0.7, 1, 0.7],
+        }}
+        transition={{
+          duration: 2,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+        className="inline-block h-2 w-2 rounded-full bg-primary"
+      />
+      {text}
+    </motion.span>
+  );
+}
+
 export function AnimatedHero() {
   const containerRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
@@ -108,9 +183,9 @@ export function AnimatedHero() {
   const scale = useTransform(scrollYProgress, [0, 1], [1, 0.96]);
 
   return (
-    <section ref={containerRef} className="relative flex min-h-[95vh] items-center overflow-hidden">
+    <section ref={containerRef} className="pt-34 relative flex min-h-[95vh] items-center overflow-hidden">
       <motion.div className="absolute inset-0 -z-20" style={{ opacity }}>
-        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/40 to-black" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/65 via-black/85 to-black z-10" />
         {posterRows.map((row) => (
           <HeroPosterRow key={row.id} {...row} />
         ))}
@@ -145,7 +220,7 @@ export function AnimatedHero() {
                 >
                   <Badge
                     variant="secondary"
-                    className="flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-5 py-2 backdrop-blur-xl text-white/90"
+                    className="flex items-center gap-2 rounded-full border border-white/30 bg-white/15 px-5 py-2 backdrop-blur-xl text-white font-medium drop-shadow-lg"
                   >
                     <Icon className="h-4 w-4 text-primary" />
                     {label}
@@ -155,27 +230,13 @@ export function AnimatedHero() {
             </div>
 
             <div className="space-y-6 text-balance">
-              <motion.span
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.35 }}
-                className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-6 py-2 text-sm uppercase tracking-[0.4em] text-white/60"
-              >
-                Welcome to Filmora
-              </motion.span>
-              <motion.h1
-                initial={{ opacity: 0, y: 40 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.4 }}
-                className="text-5xl font-bold leading-tight tracking-tight text-white drop-shadow-lg sm:text-6xl lg:text-7xl"
-              >
-                Produce unforgettable film experiences with a living library that never stops evolving.
-              </motion.h1>
+              <AnimatedLabel text="Welcome to Filmora" />
+              <AnimatedTitle text="Produce unforgettable film experiences with a living library that never stops evolving." />
               <motion.p
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.55 }}
-                className="mx-auto max-w-2xl text-lg leading-relaxed text-white/75 md:mx-0"
+                className="mx-auto max-w-2xl text-lg leading-relaxed text-white/90 drop-shadow-lg md:mx-0 [text-shadow:_0_2px_12px_rgba(0,0,0,0.7)]"
               >
                 Curate cinematic universes, manage releases, and collaborate with your team inside a single cinematic hub. Filmora blends metadata magic with breathtaking presentation so every story gets the spotlight it deserves.
               </motion.p>
@@ -221,7 +282,7 @@ export function AnimatedHero() {
         </div>
       </motion.div>
 
-      <motion.div
+      {/* <motion.div
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1, delay: 1, repeat: Infinity, repeatType: "reverse" }}
@@ -234,7 +295,7 @@ export function AnimatedHero() {
             className="h-1.5 w-1.5 rounded-full bg-white"
           />
         </div>
-      </motion.div>
+      </motion.div> */}
     </section>
   );
 }

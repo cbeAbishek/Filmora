@@ -62,7 +62,7 @@ export const movieSchema = z.object({
 });
 
 export const preferenceSchema = z.object({
-  theme: z.enum(["light", "dark", "system", "sunset", "lagoon"]),
+  theme: z.enum(["light", "dark", "system"]),
   accentColor: z
     .string()
     .regex(/^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/)
