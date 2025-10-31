@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.requireAuth = void 0;
 const clerk_1 = require("../config/clerk");
+const env_1 = require("../config/env");
 const http_error_1 = require("../utils/http-error");
 const BEARER_PREFIX = 'Bearer ';
 const requireAuth = async (req, _res, next) => {
@@ -11,7 +12,10 @@ const requireAuth = async (req, _res, next) => {
     }
     const token = authorizationHeader.substring(BEARER_PREFIX.length).trim();
     try {
-        const verification = await clerk_1.clerk.verifyToken(token);
+        const verifyOptions = env_1.env.CLERK_JWT_TEMPLATE_NAME
+            ? { template: env_1.env.CLERK_JWT_TEMPLATE_NAME }
+            : undefined;
+        const verification = await clerk_1.clerk.verifyToken(token, verifyOptions);
         const authContext = {
             userId: verification.sub,
         };

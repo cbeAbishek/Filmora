@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.movieRepository = exports.MovieRepository = void 0;
+const client_1 = require("@prisma/client");
 const prisma_1 = require("../config/prisma");
 const buildOrderBy = (sort, order) => ({
     [sort]: order,
@@ -53,14 +54,15 @@ class MovieRepository {
         const { cursor, limit, search, sort, order } = query;
         const where = {
             userId,
-            ...(search && {
-                OR: [
-                    { title: { contains: search, mode: 'insensitive' } },
-                    { director: { contains: search, mode: 'insensitive' } },
-                    { location: { contains: search, mode: 'insensitive' } },
-                ],
-            }),
         };
+        const searchTerm = search?.trim();
+        if (searchTerm) {
+            where.OR = [
+                { title: { contains: searchTerm, mode: client_1.Prisma.QueryMode.insensitive } },
+                { director: { contains: searchTerm, mode: client_1.Prisma.QueryMode.insensitive } },
+                { location: { contains: searchTerm, mode: client_1.Prisma.QueryMode.insensitive } },
+            ];
+        }
         const records = await prisma_1.prisma.movie.findMany({
             where,
             take: limit + 1,

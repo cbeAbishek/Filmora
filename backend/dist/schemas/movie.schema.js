@@ -28,9 +28,19 @@ const releaseYearSchema = zod_1.z
     return typeof value === 'string' ? Number.parseInt(value, 10) : value;
 });
 const releaseDateSchema = zod_1.z
-    .string()
-    .datetime({ offset: true })
-    .optional()
+    .preprocess((value) => {
+    if (value === undefined || value === null || value === '') {
+        return undefined;
+    }
+    if (value instanceof Date) {
+        return value.toISOString();
+    }
+    if (typeof value === 'string') {
+        const trimmed = value.trim();
+        return trimmed ? trimmed : undefined;
+    }
+    return value;
+}, zod_1.z.string().datetime({ offset: true }).optional())
     .transform((value) => (value ? new Date(value) : undefined));
 exports.createMovieSchema = zod_1.z.object({
     title: nonEmptyString,
@@ -63,8 +73,12 @@ exports.omdbSearchQuerySchema = zod_1.z.object({
     page: zod_1.z.coerce.number().int().min(1).max(10).default(1),
 });
 exports.preferenceSchema = zod_1.z.object({
-    theme: zod_1.z.enum(['light', 'dark', 'system']).default('light'),
-    accentColor: zod_1.z.string().regex(/^#[0-9a-fA-F]{6}$/).optional(),
+    theme: zod_1.z.enum(['light', 'dark', 'system', 'sunset', 'lagoon']).default('system'),
+    accentColor: zod_1.z
+        .string()
+        .regex(/^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/)
+        .optional()
+        .nullable(),
 });
 exports.importFromOmdbSchema = zod_1.z.object({
     omdbId: zod_1.z.string().min(1, 'omdbId is required'),

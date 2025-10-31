@@ -1,6 +1,7 @@
 import type { PreferenceInput } from '../schemas/movie.schema';
 import type { AuthContext } from '../utils/auth-context';
 declare class PreferenceService {
+    private normalizeAccent;
     get(auth: AuthContext): Promise<{
         createdAt: Date;
         id: string;

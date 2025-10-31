@@ -1,9 +1,10 @@
+import { Prisma } from '@prisma/client';
 import type { CreateMovieInput, ListMoviesQuery, UpdateMovieInput } from '../schemas/movie.schema';
 export declare class MovieRepository {
     create(userId: string, input: CreateMovieInput): Promise<{
         title: string;
         director: string;
-        budget: import("@prisma/client/runtime/library").Decimal | null;
+        budget: Prisma.Decimal | null;
         location: string;
         releaseYear: number | null;
         releaseDate: Date | null;
@@ -19,7 +20,7 @@ export declare class MovieRepository {
     update(id: string, input: UpdateMovieInput): Promise<{
         title: string;
         director: string;
-        budget: import("@prisma/client/runtime/library").Decimal | null;
+        budget: Prisma.Decimal | null;
         location: string;
         releaseYear: number | null;
         releaseDate: Date | null;
@@ -35,7 +36,7 @@ export declare class MovieRepository {
     delete(id: string): Promise<{
         title: string;
         director: string;
-        budget: import("@prisma/client/runtime/library").Decimal | null;
+        budget: Prisma.Decimal | null;
         location: string;
         releaseYear: number | null;
         releaseDate: Date | null;
@@ -51,7 +52,7 @@ export declare class MovieRepository {
     findById(id: string): Promise<{
         title: string;
         director: string;
-        budget: import("@prisma/client/runtime/library").Decimal | null;
+        budget: Prisma.Decimal | null;
         location: string;
         releaseYear: number | null;
         releaseDate: Date | null;
@@ -67,7 +68,7 @@ export declare class MovieRepository {
     findByOmdbId(userId: string, omdbId: string): Promise<{
         title: string;
         director: string;
-        budget: import("@prisma/client/runtime/library").Decimal | null;
+        budget: Prisma.Decimal | null;
         location: string;
         releaseYear: number | null;
         releaseDate: Date | null;
@@ -84,7 +85,7 @@ export declare class MovieRepository {
         data: {
             title: string;
             director: string;
-            budget: import("@prisma/client/runtime/library").Decimal | null;
+            budget: Prisma.Decimal | null;
             location: string;
             releaseYear: number | null;
             releaseDate: Date | null;

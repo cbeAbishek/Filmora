@@ -6,7 +6,7 @@ export declare const createMovieSchema: z.ZodObject<{
     location: z.ZodString;
     duration: z.ZodCoercedNumber<unknown>;
     releaseYear: z.ZodPipe<z.ZodOptional<z.ZodUnion<readonly [z.ZodNumber, z.ZodString]>>, z.ZodTransform<number | undefined, string | number | undefined>>;
-    releaseDate: z.ZodPipe<z.ZodOptional<z.ZodString>, z.ZodTransform<Date | undefined, string | undefined>>;
+    releaseDate: z.ZodPipe<z.ZodPipe<z.ZodTransform<{} | undefined, unknown>, z.ZodOptional<z.ZodString>>, z.ZodTransform<Date | undefined, string | undefined>>;
     description: z.ZodOptional<z.ZodString>;
     posterUrl: z.ZodOptional<z.ZodString>;
     omdbId: z.ZodOptional<z.ZodString>;
@@ -18,7 +18,7 @@ export declare const updateMovieSchema: z.ZodObject<{
     location: z.ZodOptional<z.ZodString>;
     duration: z.ZodOptional<z.ZodCoercedNumber<unknown>>;
     releaseYear: z.ZodOptional<z.ZodPipe<z.ZodOptional<z.ZodUnion<readonly [z.ZodNumber, z.ZodString]>>, z.ZodTransform<number | undefined, string | number | undefined>>>;
-    releaseDate: z.ZodOptional<z.ZodPipe<z.ZodOptional<z.ZodString>, z.ZodTransform<Date | undefined, string | undefined>>>;
+    releaseDate: z.ZodOptional<z.ZodPipe<z.ZodPipe<z.ZodTransform<{} | undefined, unknown>, z.ZodOptional<z.ZodString>>, z.ZodTransform<Date | undefined, string | undefined>>>;
     description: z.ZodOptional<z.ZodOptional<z.ZodString>>;
     posterUrl: z.ZodOptional<z.ZodOptional<z.ZodString>>;
     omdbId: z.ZodOptional<z.ZodOptional<z.ZodString>>;
@@ -58,8 +58,10 @@ export declare const preferenceSchema: z.ZodObject<{
         light: "light";
         dark: "dark";
         system: "system";
+        sunset: "sunset";
+        lagoon: "lagoon";
     }>>;
-    accentColor: z.ZodOptional<z.ZodString>;
+    accentColor: z.ZodNullable<z.ZodOptional<z.ZodString>>;
 }, z.core.$strip>;
 export declare const importFromOmdbSchema: z.ZodObject<{
     omdbId: z.ZodString;
@@ -70,7 +72,7 @@ export declare const importFromOmdbSchema: z.ZodObject<{
         location: z.ZodOptional<z.ZodString>;
         duration: z.ZodOptional<z.ZodCoercedNumber<unknown>>;
         releaseYear: z.ZodOptional<z.ZodPipe<z.ZodOptional<z.ZodUnion<readonly [z.ZodNumber, z.ZodString]>>, z.ZodTransform<number | undefined, string | number | undefined>>>;
-        releaseDate: z.ZodOptional<z.ZodPipe<z.ZodOptional<z.ZodString>, z.ZodTransform<Date | undefined, string | undefined>>>;
+        releaseDate: z.ZodOptional<z.ZodPipe<z.ZodPipe<z.ZodTransform<{} | undefined, unknown>, z.ZodOptional<z.ZodString>>, z.ZodTransform<Date | undefined, string | undefined>>>;
         description: z.ZodOptional<z.ZodOptional<z.ZodString>>;
         posterUrl: z.ZodOptional<z.ZodOptional<z.ZodString>>;
         omdbId: z.ZodOptional<z.ZodOptional<z.ZodString>>;

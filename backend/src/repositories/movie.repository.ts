@@ -1,9 +1,10 @@
+import { Prisma } from '@prisma/client';
 import { prisma } from '../config/prisma';
 import type { CreateMovieInput, ListMoviesQuery, UpdateMovieInput } from '../schemas/movie.schema';
 
-const buildOrderBy = (sort: ListMoviesQuery['sort'], order: ListMoviesQuery['order']) => ({
+const buildOrderBy = (sort: ListMoviesQuery['sort'], order: ListMoviesQuery['order']): Prisma.MovieOrderByWithRelationInput => ({
   [sort]: order,
-});
+}) as Prisma.MovieOrderByWithRelationInput;
 
 export class MovieRepository {
   async create(userId: string, input: CreateMovieInput) {
@@ -57,16 +58,18 @@ export class MovieRepository {
   async list(userId: string, query: ListMoviesQuery) {
     const { cursor, limit, search, sort, order } = query;
 
-    const where = {
+    const where: Prisma.MovieWhereInput = {
       userId,
-      ...(search && {
-        OR: [
-          { title: { contains: search, mode: 'insensitive' } },
-          { director: { contains: search, mode: 'insensitive' } },
-          { location: { contains: search, mode: 'insensitive' } },
-        ],
-      }),
     };
+
+    const searchTerm = search?.trim();
+    if (searchTerm) {
+      where.OR = [
+        { title: { contains: searchTerm, mode: Prisma.QueryMode.insensitive } },
+        { director: { contains: searchTerm, mode: Prisma.QueryMode.insensitive } },
+        { location: { contains: searchTerm, mode: Prisma.QueryMode.insensitive } },
+      ];
+    }
 
     const records = await prisma.movie.findMany({
       where,

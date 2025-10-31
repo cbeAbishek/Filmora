@@ -20,7 +20,6 @@ const validateQuery = (schema) => {
             next(result.error);
             return;
         }
-        req.query = result.data;
         next();
     };
 };
